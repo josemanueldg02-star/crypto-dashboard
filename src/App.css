@@ -1,0 +1,122 @@
+/* Reseteo y colores base profesionales */
+body {
+  background-color: #0f172a; /* Azul noche profundo */
+  color: #f8fafc; /* Blanco roto para no cansar la vista */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* --- ESTILOS DE LA CABECERA --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid #334155;
+  padding-bottom: 1.5rem;
+}
+
+.titulo h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #f8fafc;
+}
+
+.titulo p {
+  margin: 5px 0 0 0;
+  color: #94a3b8;
+}
+
+.saldo-total {
+  text-align: right;
+}
+
+.saldo-total p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.saldo-total h2 {
+  margin: 5px 0 0 0;
+  color: #10b981; /* Verde esmeralda financiero */
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+
+/* --- ESTILOS DE LA CUADRÍCULA Y LAS TARJETAS --- */
+.grid-criptomonedas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta-crypto {
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #334155;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto al pasar el ratón (Hover) */
+.tarjeta-crypto:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+  box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2);
+}
+
+.crypto-info h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.simbolo {
+  background-color: #334155;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #cbd5e1;
+}
+
+.cantidad {
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.crypto-valor {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.precio-unitario {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0 0 5px 0;
+}
+
+.valor-total {
+  color: #f8fafc;
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0;
+}
