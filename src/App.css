@@ -120,3 +120,69 @@ body {
   font-size: 1.25rem;
   margin: 0;
 }
+
+/* ESTILOS DEL FORMULARIO Y BUSCADOR */
+.seccion-formulario {
+  margin-bottom: 2rem;
+}
+
+.formulario-crypto {
+  display: flex;
+  gap: 1rem;
+  background-color: #1e293b;
+  padding: 1.5rem;
+  border-radius: 16px;
+  border: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.formulario-crypto input {
+  flex: 1;
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  color: #f8fafc;
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.formulario-crypto input:focus {
+  border-color: #3b82f6;
+}
+
+.formulario-crypto button {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.formulario-crypto button:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+.formulario-crypto button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.formulario-crypto button:disabled {
+  background-color: #475569;
+  cursor: not-allowed;
+}
+
+.mensaje-vacio {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #94a3b8;
+  padding: 3rem;
+  background-color: #1e293b;
+  border-radius: 16px;
+  border: 1px dashed #334155;
+}

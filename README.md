@@ -1,16 +1,24 @@
-# React + Vite
+# 🚀 CryptoPortfolio Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interfaz moderna construida con React para gestionar y visualizar una cartera de criptomonedas. Este proyecto está diseñado para conectarse de forma fluida a una API robusta en Java (Spring Boot) y reflejar los datos en tiempo real.
 
-Currently, two official plugins are available:
+## 🛠️ Tecnologías Utilizadas
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+* **Frontend:** React (Vite)
+* **Estilos:** CSS3 nativo con diseño Dark Mode moderno y paleta de colores profesional.
+* **Integración HTTP:** Peticiones asíncronas (`fetch`) con resolución bidireccional y manejo de estados de carga (`useState`, `useEffect`).
 
-## React Compiler
+## ✨ Características Principales
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. **Arquitectura Full-Stack:** Conectado directamente a un backend en Spring Boot y a una base de datos PostgreSQL alojada en contenedores Docker.
+2. **Two-Way Data Binding:** Formularios interactivos que envían datos (POST) y actualizan el panel visual instantáneamente sin recargar la página.
+3. **Manejo de Errores Profesional:** Bloques `try/catch` para atrapar respuestas de servidor fallidas y evitar caídas de la interfaz.
+4. **Estrategia de Seguridad CORS:** Intercambio de peticiones estructuradas mediante Query Parameters para sortear filtros estrictos de Spring Security y prevenir pérdidas de "Body".
 
-## Expanding the ESLint configuration
+## 🚀 Próximos Pasos (Roadmap)
+* [ ] Integrar consumo de APIs públicas (CoinGecko / Binance) para mostrar precios en vivo.
+* [ ] Calcular el patrimonio real multiplicando saldos por la cotización en tiempo real.
+* [ ] Desarrollar botones operativos de simulación de compra/venta.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+*Desarrollado con arquitectura sólida para escalabilidad financiera.*
