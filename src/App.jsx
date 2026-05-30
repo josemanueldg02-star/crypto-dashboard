@@ -7,8 +7,6 @@ function App() {
   const [cargando, setCargando] = useState(true);
   const [nuevaMoneda, setNuevaMoneda] = useState('');
   const [enviando, setEnviando] = useState(false);
-  
-  //Estado para almacenar los precios en vivo desde Binance
   const [precios, setPrecios] = useState({});
 
   // 2. CONEXIÓN CON MI BACKEND (JAVA)
@@ -18,6 +16,11 @@ function App() {
       if (!respuesta.ok) throw new Error(`Error HTTP: ${respuesta.status}`);
       
       const datosReales = await respuesta.json();
+
+      // 🚀 BLINDAJE 1 (El orden): 
+      // Obligamos a la lista a ordenarse siempre por ID para evitar los saltos de PostgreSQL
+      datosReales.sort((a, b) => a.id - b.id);
+
       setCriptomonedas(datosReales);
     } catch (error) {
       console.error("[-] Fallo en la conexión con Java:", error);
@@ -32,7 +35,6 @@ function App() {
 
   // 3. CONEXIÓN CON BINANCE
   useEffect(() => {
-    // Si no tenemos monedas en la cartera, no hay nada que buscar
     if (criptomonedas.length === 0) return;
 
     const obtenerPreciosDeBinance = async () => {
@@ -45,7 +47,6 @@ function App() {
           
           if (respuesta.ok) {
             const datos = await respuesta.json();
-            // Guardamos el precio convertido a número decimal
             nuevosPrecios[crypto.simboloMoneda] = parseFloat(datos.price);
           }
         } catch (error) {
@@ -53,17 +54,11 @@ function App() {
         }
       }
       
-      // Actualizamos la memoria de React con los precios frescos
       setPrecios(nuevosPrecios);
     };
 
-    // Buscamos los precios inmediatamente...
     obtenerPreciosDeBinance();
-
-    // ...Y configuramos un temporizador para buscar precios frescos cada 10 segundos
     const intervalo = setInterval(obtenerPreciosDeBinance, 10000);
-    
-    // Limpiamos el temporizador si el componente se cierra
     return () => clearInterval(intervalo);
     
   }, [criptomonedas]); 
@@ -90,14 +85,33 @@ function App() {
     }
   };
 
-  // 5. CÁLCULO DINÁMICO DEL PATRIMONIO
+  // 5. LÓGICA DE OPERACIONES (Modificar Saldo)
+  const modificarSaldo = async (simbolo, cantidad) => {
+    try {
+      const urlExacta = `http://localhost:8080/api/carteras/usuario/1/modificar?simboloMoneda=${simbolo}&monto=${cantidad}`;
+
+      const respuesta = await fetch(urlExacta, {
+        method: 'PUT'
+      });
+
+      if (!respuesta.ok) throw new Error('Fallo al modificar el saldo');
+
+      await obtenerDatosDelBackend();
+    } catch (error) {
+      // Corrección de las comillas invertidas aplicada aquí:
+      console.error(`Error al operar con ${simbolo}:`, error);
+      alert("Hubo un error al realizar la operación.");
+    }
+  };
+
+  // 6. CÁLCULO DINÁMICO DEL PATRIMONIO
   const saldoTotal = criptomonedas.reduce((total, crypto) => {
     const precioActual = precios[crypto.simboloMoneda] || 0;
     return total + ((crypto.saldo || 0) * precioActual);
   }, 0);
 
 
-  // 6. RENDERIZADO VISUAL
+  // 7. RENDERIZADO VISUAL
   if (cargando) {
     return (
       <div className="dashboard-container">
@@ -115,7 +129,6 @@ function App() {
         </div>
         <div className="saldo-total">
           <p>Patrimonio Real</p>
-          {}
           <h2>${saldoTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</h2>
         </div>
       </header>
@@ -141,24 +154,69 @@ function App() {
           <p className="mensaje-vacio">No tienes activos en tu cartera. ¡Añade tu primera criptomoneda arriba!</p>
         ) : (
           criptomonedas.map((crypto) => {
-            // Extraemos el precio en vivo de esta moneda (o mostramos 0 si aún está cargando)
             const precioActual = precios[crypto.simboloMoneda] || 0;
             const valorTotalMoneda = (crypto.saldo || 0) * precioActual;
 
             return (
-              <div key={crypto.id} className="tarjeta-crypto">
-                <div className="crypto-info">
+              <div key={crypto.id} className="tarjeta-crypto" style={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                boxSizing: 'border-box',
+                overflow: 'hidden'
+              }}>
+                <div className="crypto-info" style={{ width: '100%' }}>
                   <h3>{crypto.simboloMoneda}</h3>
-                  <p className="cantidad">{crypto.saldo} {crypto.simboloMoneda}</p>
+                  <p className="cantidad" style={{
+                    fontVariantNumeric: 'tabular-nums', // 🪄 MAGIA 1: Todos los números miden lo mismo
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                    width: '100%' // 🪄 MAGIA 2: Prohíbe ensanchar la tarjeta
+                  }}>
+                    {Number(crypto.saldo).toLocaleString('en-US', { maximumFractionDigits: 4 })} {crypto.simboloMoneda}
+                  </p>
                 </div>
-                <div className="crypto-valor">
-                  {}
-                  <p className="precio-unitario">
-                    Precio: {precioActual > 0 ? `$${precioActual.toLocaleString('en-US', {minimumFractionDigits: 2})}` : 'Buscando precio...'}
+                
+                <div className="crypto-valor" style={{ width: '100%', flexGrow: 1 }}>
+                  <p className="precio-unitario" style={{
+                    fontVariantNumeric: 'tabular-nums',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                    width: '100%'
+                  }}>
+                    Precio: {precioActual > 0 ? `$${precioActual.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}` : 'Calculando...'}
                   </p>
-                  <p className="valor-total">
-                    ${valorTotalMoneda.toLocaleString('en-US', {minimumFractionDigits: 2})}
+                  <p className="valor-total" style={{
+                    fontVariantNumeric: 'tabular-nums',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: 'block',
+                    width: '100%'
+                  }}>
+                    ${valorTotalMoneda.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                   </p>
+                </div>
+
+                {/* PANEL DE OPERACIONES */}
+                <div className="crypto-operaciones" style={{ display: 'flex', gap: '10px', marginTop: 'auto', width: '100%' }}>
+                  <button 
+                    onClick={() => modificarSaldo(crypto.simboloMoneda, -0.1)}
+                    disabled={crypto.saldo <= 0.0001} 
+                    style={{ flex: 1, backgroundColor: '#ff4d4d', minWidth: 0, padding: '10px 5px', whiteSpace: 'nowrap' }}
+                  >
+                    Vender 0.1
+                  </button>
+                  <button 
+                    onClick={() => modificarSaldo(crypto.simboloMoneda, 0.1)}
+                    style={{ flex: 1, backgroundColor: '#4caf50', minWidth: 0, padding: '10px 5px', whiteSpace: 'nowrap' }}
+                  >
+                    Comprar 0.1
+                  </button>
                 </div>
               </div>
             );
