@@ -1,25 +1,40 @@
-# 🚀 CryptoPortfolio Dashboard
+# Crypto Exchange — Dashboard
 
-Interfaz moderna construida con React para gestionar y visualizar una cartera de criptomonedas. Este proyecto está diseñado para conectarse de forma fluida a una API robusta en Java (Spring Boot) y reflejar los datos y cotizaciones del mercado en tiempo real.
+React frontend for the [crypto-api](https://github.com/josemanueldg02-star/crypto-api) 
+exchange backend. Displays real-time portfolio value, live crypto prices from 
+Binance, and lets users simulate buy/sell orders with instant balance updates.
 
-## ✨ Características Principales
-
-1. **Arquitectura Full-Stack:** Conectado directamente a un backend transaccional en Spring Boot y a una base de datos PostgreSQL alojada mediante contenedores Docker.
-2. **Cotizaciones en Vivo (Binance API):** Consumo asíncrono de la API pública de Binance para actualizar los precios de los activos cada pocos segundos sin recargar la página.
-3. **Motor Transaccional Dinámico:** Botones de simulación de compra/venta que se comunican vía peticiones `PUT` con la base de datos para actualizar los saldos al instante.
-4. **Cálculo de Patrimonio en Tiempo Real:** Algoritmo que cruza los saldos locales de la base de datos con los precios del mercado global para calcular el valor total del portfolio con precisión.
-5. **UI/UX Blindada (Anti-Layout Shift):** Diseño robusto utilizando CSS avanzado (`tabular-nums`, `text-overflow`, `white-space: nowrap`) para garantizar que la cuadrícula no sufra desajustes visuales ante la volatilidad de los números.
-
-## 🛠️ Tecnologías Utilizadas
-
-* **Frontend:** React (Vite).
-* **Estilos:** CSS3 nativo con diseño Dark Mode moderno y reglas tipográficas estrictas.
-* **Integración HTTP:** Peticiones asíncronas (`fetch`) con resolución bidireccional y manejo de estados de ciclo de vida (`useState`, `useEffect`).
-
-## 🚀 Próximos Pasos (Roadmap)
-* [ ] Integrar una librería de gráficos (ej. Chart.js) para visualizar visualmente la distribución del portfolio.
-* [ ] Desarrollar un historial de transacciones (libro mayor) para registrar la fecha y hora de cada compra y venta.
-* [ ] Añadir selector de divisas fiduciarias para ver el patrimonio en EUR, GBP, etc.
+[![React](https://img.shields.io/badge/React-latest-blue)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-latest-purple)](https://vitejs.dev/)
+[![Binance API](https://img.shields.io/badge/Binance-live%20prices-F0B90B)](https://binance-docs.github.io/apidocs/)
 
 ---
-*Desarrollado con arquitectura sólida para escalabilidad financiera.*
+
+## Features
+
+- **Live Binance prices** polling every few seconds without page reload
+- **Real-time portfolio value** calculated by crossing database balances 
+with current market prices
+- **Buy/sell simulation** via PUT requests that update balances instantly
+- Dark mode UI with anti-layout-shift CSS (`tabular-nums`, `text-overflow`) 
+to handle volatile number updates cleanly
+
+---
+
+## Running Locally
+
+**Prerequisites:** Node.js LTS, and [crypto-api](https://github.com/josemanueldg02-star/crypto-api) 
+running on port 8080.
+
+```bash
+git clone https://github.com/josemanueldg02-star/crypto-dashboard.git
+cd crypto-dashboard
+npm install
+npm run dev
+```
+
+---
+
+## Author
+
+**José Manuel Domínguez García** · [@josemanueldg02-star](https://github.com/josemanueldg02-star)
